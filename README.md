@@ -3,7 +3,7 @@ Role Name
 
 An [Ansible] role to deploy a [Kubernetes] - K8s Cluster
 
-- `[Weave-Net]` is used for the network overlay currently
+- [Weave-Net] is used for the network overlay currently
 
 Requirements
 ------------
