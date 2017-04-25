@@ -180,6 +180,158 @@ Additional Info
 ---------------
 - Reset `K8s` cluster
   - `ansible-playbook -i hosts playbook.yml --tags k8s_reset -e "k8s_reset_cluster=true"`
+- Get a list of pods and information on them
+
+```
+ansible-playbook -i hosts playbook.yml --tags k8s_pods
+```
+
+```
+{
+	"containers": [{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/etcd-amd64:3.0.17",
+			"name": "etcd",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/kube-apiserver-amd64:v1.6.0",
+			"name": "kube-apiserver",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {
+				"requests": {
+					"cpu": "250m"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/kube-controller-manager-amd64:v1.6.0",
+			"name": "kube-controller-manager",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {
+				"requests": {
+					"cpu": "200m"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.1",
+			"name": "kubedns",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "10.32.0.2",
+			"resources": {
+				"limits": {
+					"memory": "170Mi"
+				},
+				"requests": {
+					"cpu": "100m",
+					"memory": "70Mi"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/kube-proxy-amd64:v1.6.0",
+			"name": "kube-proxy",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {}
+		},
+		{
+			"hostIP": "192.168.250.11",
+			"image": "gcr.io/google_containers/kube-proxy-amd64:v1.6.0",
+			"name": "kube-proxy",
+			"nodeName": "node1",
+			"phase": "Running",
+			"podIP": "192.168.250.11",
+			"resources": {}
+		},
+		{
+			"hostIP": "192.168.250.12",
+			"image": "gcr.io/google_containers/kube-proxy-amd64:v1.6.0",
+			"name": "kube-proxy",
+			"nodeName": "node2",
+			"phase": "Running",
+			"podIP": "192.168.250.12",
+			"resources": {}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/kube-scheduler-amd64:v1.6.0",
+			"name": "kube-scheduler",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {
+				"requests": {
+					"cpu": "100m"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.0",
+			"name": "kubernetes-dashboard",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "10.32.0.3",
+			"resources": {}
+		},
+		{
+			"hostIP": "192.168.250.10",
+			"image": "weaveworks/weave-kube:1.9.4",
+			"name": "weave",
+			"nodeName": "node0",
+			"phase": "Running",
+			"podIP": "192.168.250.10",
+			"resources": {
+				"requests": {
+					"cpu": "10m"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.11",
+			"image": "weaveworks/weave-kube:1.9.4",
+			"name": "weave",
+			"nodeName": "node1",
+			"phase": "Running",
+			"podIP": "192.168.250.11",
+			"resources": {
+				"requests": {
+					"cpu": "10m"
+				}
+			}
+		},
+		{
+			"hostIP": "192.168.250.12",
+			"image": "weaveworks/weave-kube:1.9.4",
+			"name": "weave",
+			"nodeName": "node2",
+			"phase": "Running",
+			"podIP": "192.168.250.12",
+			"resources": {
+				"requests": {
+					"cpu": "10m"
+				}
+			}
+		}
+	]
+
+}
+```
 
 License
 -------
