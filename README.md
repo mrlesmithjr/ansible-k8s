@@ -3,6 +3,8 @@ Role Name
 
 An [Ansible] role to deploy a [Kubernetes] - K8s Cluster
 
+- `[Weave-Net]` is used for the network overlay currently
+
 Requirements
 ------------
 
@@ -52,6 +54,7 @@ k8s_token_file: '/etc/kubernetes/.k8s_token'
 Dependencies
 ------------
 
+None
 
 Example Playbook
 ----------------
@@ -81,6 +84,79 @@ Example Playbook
   tasks:
 ```
 
+Vagrant
+-------
+
+- Requirements
+  - [Ansible]
+  - [Vagrant]
+  - [Virtualbox]
+
+Included in the `Vagrant` folder is a testing environment with `3` nodes.
+- `node0` - K8s Cluster Master (`192.168.250.10`)
+- `node1` - K8s Cluster Member (`192.168.250.11`)
+- `node2` - K8s Cluster Member (`192.168.250.12`)
+
+You can easily spin this up for learning purposes:
+```
+cd Vagrant/
+vagrant up
+```
+
+Once the environment spins up you will see the following:
+```
+TASK [ansible-k8s : cluster_summary | Displaying Cluster Nodes] ****************
+skipping: [node1]
+ok: [node0] => {
+    "_k8s_cluster_nodes['stdout_lines']": [
+        "NAME      STATUS     AGE       VERSION",
+        "node0     Ready      1m        v1.6.1",
+        "node1     NotReady   4s        v1.6.1",
+        "node2     NotReady   6s        v1.6.1"
+    ],
+    "changed": false
+}
+skipping: [node2]
+```
+Do not worry about the above as the additional nodes did not completely join
+the cluster before the provisioning completed. You can quickly validate that
+the additional nodes are up and `Ready` by running:
+```
+ansible-playbook -i hosts playbook.yml --tags k8s_cluster_nodes
+```
+```
+TASK [ansible-k8s : cluster_summary | Displaying Cluster Nodes] ****************************************************************************************************************
+skipping: [node1]
+ok: [node0] => {
+    "_k8s_cluster_nodes['stdout_lines']": [
+        "NAME      STATUS    AGE       VERSION",
+        "node0     Ready     7m        v1.6.1",
+        "node1     Ready     6m        v1.6.1",
+        "node2     Ready     6m        v1.6.1"
+    ],
+    "changed": false
+}
+skipping: [node2]
+```
+
+Once the cluster is up `ssh` to `node0` and begin playing:
+```
+vagrant ssh node0
+```
+
+When you are all done using the environment easily tear it down:
+```
+./cleanup.sh
+```
+```
+==> node2: Forcing shutdown of VM...
+==> node2: Destroying VM and associated drives...
+==> node1: Forcing shutdown of VM...
+==> node1: Destroying VM and associated drives...
+==> node0: Forcing shutdown of VM...
+==> node0: Destroying VM and associated drives...
+```
+
 License
 -------
 
@@ -96,3 +172,6 @@ Larry Smith Jr.
 
 [Ansible]: <https://www.ansible.com>
 [Kubernetes]: <https://kubernetes.io>
+[Vagrant]: <https://www.vagrantup.com/>
+[Virtualbox]: <https://www.virtualbox.org/>
+[Weave-Net]: <https://www.weave.works/docs/net/latest/kube-addon/>
