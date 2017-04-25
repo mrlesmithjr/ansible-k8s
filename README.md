@@ -157,6 +157,11 @@ When you are all done using the environment easily tear it down:
 ==> node0: Destroying VM and associated drives...
 ```
 
+Additional Info
+---------------
+- Reset `K8s` cluster
+  - `ansible-playbook -i hosts playbook.yml --tags k8s_reset -e "k8s_reset_cluster=true"`
+
 License
 -------
 
