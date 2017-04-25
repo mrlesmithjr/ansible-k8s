@@ -6,9 +6,12 @@
     - 'k8s_cluster_ip'
     - 'k8s_cluster_nodes'
     - 'k8s_dashboard'
+    - 'k8s_helm'
 
 - include: debian.yml
   when: ansible_os_family == "Debian"
+
+- include: services.yml
 
 - include: init_cluster.yml
 
@@ -24,6 +27,13 @@
 - include: dashboard.yml
   tags:
     - 'k8s_dashboard'
+
+- include: users.yml
+
+- include: helm.yml
+  tags:
+    - 'k8s_helm'
+  when: k8s_helm_install
 
 - include: reset_cluster.yml
   when: k8s_reset_cluster
