@@ -5,6 +5,7 @@
   tags:
     - 'k8s_cluster_ip'
     - 'k8s_cluster_nodes'
+    - 'k8s_cluster_services'
     - 'k8s_dashboard'
     - 'k8s_helm'
     - 'k8s_pods'
@@ -16,6 +17,7 @@
 
 - include: init_cluster.yml
   tags:
+    - 'k8s_cluster_services'
     - 'k8s_pods'
 
 - include: network.yml
@@ -41,6 +43,16 @@
 - include: pods.yml
   tags:
     - 'k8s_pods'
+  when: >
+        (inventory_hostname == k8s_master) and
+        k8s_cluster_init
+
+- include: cluster_services.yml
+  tags:
+    - 'k8s_cluster_services'
+  when: >
+        (inventory_hostname == k8s_master) and
+        k8s_cluster_init
 
 - include: reset_cluster.yml
   when: k8s_reset_cluster

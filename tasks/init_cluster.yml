@@ -5,11 +5,15 @@
   stat:
     path: "{{ k8s_admin_config }}"
   register: "_k8s_kubectl_cluster_info"
+  tags:
+    - 'k8s_get_dashboard'
   when: inventory_hostname == k8s_master
 
 - name: init_cluster | Setting State Of Cluster On Master
   set_fact:
     k8s_cluster_init: false
+  tags:
+    - 'k8s_get_dashboard'
   when: >
         (inventory_hostname == k8s_master) and
         not _k8s_kubectl_cluster_info['stat']['exists']
@@ -17,6 +21,8 @@
 - name: init_cluster | Setting State Of Cluster On Master
   set_fact:
     k8s_cluster_init: true
+  tags:
+    - 'k8s_get_dashboard'
   when: >
         (inventory_hostname == k8s_master) and
         _k8s_kubectl_cluster_info['stat']['exists']
