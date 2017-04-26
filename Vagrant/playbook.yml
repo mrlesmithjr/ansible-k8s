@@ -15,8 +15,10 @@
     etc_hosts_use_ansible_ssh_host: true
     pri_domain_name: 'test.vagrant.local'
   roles:
-    - role: ansible-etc-hosts
     - role: ansible-change-hostname
+    - role: ansible-etc-hosts
+    - role: ansible-timezone
+    - role: ansible-ntp
     - role: ansible-docker
     - role: ansible-k8s
   tasks:
