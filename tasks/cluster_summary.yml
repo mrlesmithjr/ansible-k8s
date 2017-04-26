@@ -6,7 +6,9 @@
   become: true
   # We wait for the number of nodes to match the number of hosts defined in
   # the ansible group. We subtract 1 to account for the header line
-  until: ((_k8s_cluster_nodes['stdout_lines']|length - 1) == (groups[k8s_cluster_group]|length) )
+  until: >
+         ((_k8s_cluster_nodes['stdout_lines']|length - 1) == (groups[k8s_cluster_group]|length) and
+         'NotReady' not in _k8s_cluster_nodes['stdout'])
   retries: 30
   delay: 10
   register: "_k8s_cluster_nodes"
