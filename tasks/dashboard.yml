@@ -29,9 +29,8 @@
 - name: dashboard | Dashboard
   debug:
     msg: "{{lookup('template', 'k8s_dashboard.j2')}}"
-  tags:
-    - 'k8s_get_dashboard'
   when: >
         (inventory_hostname == k8s_master) and
         _k8s_get_services_all is defined and
-        k8s_reports['display_dashboard_link']
+        k8s_reports['display_dashboard_link'] and
+        (_k8s_dashboard['rc'] == 0)

@@ -48,6 +48,7 @@
 - include: dashboard.yml
   tags:
     - 'k8s_dashboard'
+    - 'k8s_get_dashboard'
 
 - include: helm.yml
   tags:
