@@ -7,5 +7,5 @@
   args:
     creates: /etc/kubernetes/kubelet.conf
   become: true
-  # no_log: true
+  no_log: true
   when: not k8s_cluster_init
