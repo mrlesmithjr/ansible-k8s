@@ -4,7 +4,7 @@
            kubectl --kubeconfig {{ k8s_admin_config }} \
            apply -f {{ k8s_pod_network_config }}
   become: true
-  register: "_k8s_pod_network_applied"
+  register: _k8s_pod_network_applied
   when: >
         (inventory_hostname == k8s_master) and
         not k8s_cluster_init
@@ -14,7 +14,7 @@
            kubectl --kubeconfig {{ k8s_admin_config }} \
            get pods --all-namespaces | grep kube-dns
   become: true
-  register: "_k8s_kube_dns_running"
+  register: _k8s_kube_dns_running
   until: ("Running" in _k8s_kube_dns_running['stdout'])
   retries: 30
   delay: 10
@@ -29,39 +29,39 @@
 
 - name: network | Capturing Cluster-IP On Master
   command: "kubectl --kubeconfig {{ k8s_admin_config }} get svc -o json"
-  register: "_k8s_cluster_ip"
+  register: _k8s_cluster_ip
   become: true
   changed_when: false
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip
   when: inventory_hostname == k8s_master
 
 - name: network | Setting Cluster-IP On Master
   set_fact:
     k8s_cluster_ip: "{{ (_k8s_cluster_ip['stdout']|from_json)['items'][0]['spec']['clusterIP'] }}"
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip
   when: inventory_hostname == k8s_master
 
 - name: network | Setting Cluster-IP On Non-Master(s)
   set_fact:
     k8s_cluster_ip: "{{ hostvars[k8s_master]['k8s_cluster_ip'] }}"
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip
   when: inventory_hostname != k8s_master
 
 - name: network | Showing Cluster-IP
   debug: var=k8s_cluster_ip
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip
 
 - name: network | Checking For Cluster-IP Route On Hosts
   shell: "route -n | awk '{print $1}' | grep {{ k8s_cluster_ip }}"
-  register: "_k8s_cluster_ip_route"
+  register: _k8s_cluster_ip_route
   failed_when: "(_k8s_cluster_ip_route['rc'] > 1)"
   changed_when: false
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip
   when: inventory_hostname != k8s_master
 
 - name: network | Setting IP Route To Reach Cluster-IP On Master
@@ -73,4 +73,4 @@
         inventory_hostname != k8s_master and
         _k8s_cluster_ip_route['rc'] == 1
   tags:
-    - 'k8s_cluster_ip'
+    - k8s_cluster_ip

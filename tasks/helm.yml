@@ -2,7 +2,7 @@
 - name: helm | Checking If Helm Is Already Installed
   stat:
     path: "{{ k8s_helm_install_dir }}/helm"
-  register: "_k8s_helm_installed_check"
+  register: _k8s_helm_installed_check
   when: inventory_hostname == k8s_master
 
 - name: helm | Checking Installed Version Of Helm (If Installed)
@@ -10,7 +10,7 @@
          helm version | grep -o SemVer:.* | sed 's|:| |g' \
          | sed 's|,||g' | awk '{print $2}' | sed 's|\"||g' \
          | sed 's|v||g'
-  register: "_k8s_helm_installed_version"
+  register: _k8s_helm_installed_version
   changed_when: false
   when: >
         inventory_hostname == k8s_master and
@@ -34,7 +34,7 @@
     dest: "{{ k8s_helm_install_dir }}"
     # creates: "{{ k8s_helm_install_dir }}/helm"
     remote_src: true
-  register: "_k8s_helm_installed"
+  register: _k8s_helm_installed
   become: true
   when: >
         (inventory_hostname == k8s_master) and
@@ -55,22 +55,22 @@
 - name: helm | Ensuring Helm Is Executable
   file:
     dest: "{{ k8s_helm_install_dir }}/helm"
-    mode: "u=rwx,g=rx,o=rx"
+    mode: u=rwx,g=rx,o=rx
   become: true
   when: inventory_hostname == k8s_master
 
 - name: helm | Cleaning Up Helm Install
   file:
     dest: "{{ k8s_helm_install_dir }}/linux-amd64"
-    state: "absent"
+    state: absent
   become: true
   when: inventory_hostname == k8s_master
 
 - name: helm | Initializing Helm
-  command: "helm init"
+  command: helm init
   args:
     creates: "/home/{{ item['user'] }}/.helm"
   become: true
   become_user: "{{ item['user'] }}"
-  with_items: '{{ k8s_users }}'
+  with_items: "{{ k8s_users }}"
   when: inventory_hostname == k8s_master

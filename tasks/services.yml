@@ -3,6 +3,6 @@
   service:
     name: "{{ item }}"
     enabled: true
-    state: "started"
+    state: started
   become: true
-  with_items: '{{ k8s_services }}'
+  with_items: "{{ k8s_services }}"

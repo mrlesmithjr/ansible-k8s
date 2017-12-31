@@ -11,7 +11,7 @@
          'NotReady' not in _k8s_cluster_nodes['stdout'])
   retries: 30
   delay: 10
-  register: "_k8s_cluster_nodes"
+  register: _k8s_cluster_nodes
   when: inventory_hostname == k8s_master
 
 # We capture as JSON in order to use for later iteration
@@ -20,7 +20,7 @@
            kubectl --kubeconfig {{ k8s_admin_config }} get nodes -o json
   changed_when: false
   become: true
-  register: "_k8s_cluster_nodes_json"
+  register: _k8s_cluster_nodes_json
   when: inventory_hostname == k8s_master
 
 - name: cluster_summary | Displaying Cluster Nodes

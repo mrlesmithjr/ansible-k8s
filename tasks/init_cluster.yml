@@ -5,15 +5,15 @@
   stat:
     path: "{{ k8s_admin_config }}"
   tags:
-    - 'k8s_get_dashboard'
-  register: "_k8s_kubectl_cluster_info"
+    - k8s_get_dashboard
+  register: _k8s_kubectl_cluster_info
   when: inventory_hostname == k8s_master
 
 - name: init_cluster | Setting State Of Cluster On Master
   set_fact:
     k8s_cluster_init: false
   tags:
-    - 'k8s_get_dashboard'
+    - k8s_get_dashboard
   when: >
         (inventory_hostname == k8s_master) and
         not _k8s_kubectl_cluster_info['stat']['exists']
@@ -22,7 +22,7 @@
   set_fact:
     k8s_cluster_init: true
   tags:
-    - 'k8s_get_dashboard'
+    - k8s_get_dashboard
   when: >
         (inventory_hostname == k8s_master) and
         _k8s_kubectl_cluster_info['stat']['exists']
@@ -36,8 +36,8 @@
   debug: msg="Cluster already initialized == {{ k8s_cluster_init }}"
 
 - name: init_cluster | Generating Token
-  command: "kubeadm token generate"
-  register: "_k8s_token"
+  command: kubeadm token generate
+  register: _k8s_token
   changed_when: false
   no_log: true
   when: >
@@ -62,11 +62,11 @@
 
 # - name: init_cluster | Saving Token On Master
 #   template:
-#     src: "k8s_token.j2"
+#     src: k8s_token.j2
 #     dest: "{{ k8s_token_file }}"
-#     owner: "root"
-#     group: "root"
-#     mode: "u=rw,g=r,o="
+#     owner: root
+#     group: root
+#     mode: u=rw,g=r,o=
 #   become: true
 #   when: >
 #         (inventory_hostname == k8s_master) and
@@ -80,7 +80,7 @@
            --apiserver-bind-port \
            {{ k8s_advertise_bind_port }} \
            --token {{ k8s_token }}
-  register: "_k8s_cluster_master_init"
+  register: _k8s_cluster_master_init
   become: true
   no_log: true
   when: >
@@ -91,7 +91,7 @@
   shell: >
          kubeadm --kubeconfig {{ k8s_admin_config }} \
          token list | grep -v TOKEN | grep 'bootstrap token' | awk '{print $1}'
-  register: '_k8s_bootstrap_token'
+  register: _k8s_bootstrap_token
   become: true
   no_log: true
   changed_when: false
