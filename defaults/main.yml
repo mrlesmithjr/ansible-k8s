@@ -10,6 +10,8 @@ k8s_advertise_bind_port: 6443
 
 k8s_cluster_group: k8s
 
+k8s_cluster_multi_masters_group: k8s_masters
+
 k8s_cluster_init_skip_ca_verification: false
 
 k8s_dashboard: https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
@@ -38,6 +40,8 @@ k8s_helm_package: "helm-v{{ k8s_helm_version }}-linux-{{ k8s_helm_architecture }
 k8s_helm_url: https://kubernetes-helm.storage.googleapis.com
 
 k8s_helm_version: 2.9.0
+
+k8s_multi_master: true
 
 k8s_package_url: https://packages.cloud.google.com
 

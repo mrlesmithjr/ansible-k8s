@@ -1,5 +1,46 @@
 ---
-- name: join_cluster | Joining Additional Nodes To K8s Cluster
+- name: join_cluster | Creating /etc/kubernetes/pki
+  file:
+    path: /etc/kubernetes/pki
+    state: directory
+    owner: root
+    group: root
+  become: true
+  when: >
+        k8s_multi_master and
+        inventory_hostname in groups[k8s_cluster_multi_masters_group]
+
+- name: join_cluster | Configuring PKI Infra From Master
+  copy:
+    dest: "{{ item['source'] }}"
+    content: "{{ item['content']|b64decode }}"
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+  become: true
+  no_log: true
+  with_items: "{{ hostvars[k8s_master]['_k8s_pki_infra']['results'] }}"
+  when: >
+        k8s_multi_master and
+        inventory_hostname in groups[k8s_cluster_multi_masters_group]
+
+- name: join_cluster | Joining Additional Nodes To K8s Cluster (multi-master)
+  command: >
+           kubeadm join \
+           --token {{ k8s_token }} \
+           --discovery-token-unsafe-skip-ca-verification \
+           {{ hostvars[k8s_master]['k8s_advertise_address'] }}:{{ k8s_advertise_bind_port }}
+  args:
+    creates: /etc/kubernetes/kubelet.conf
+  become: true
+  # no_log: true
+  failed_when: false
+  when: >
+        k8s_multi_master and
+        not k8s_cluster_init and
+        k8s_cluster_init_skip_ca_verification
+
+- name: join_cluster | Joining Additional Nodes To K8s Cluster (non multi-master)
   command: >
            kubeadm join \
            --token {{ k8s_token }} \
@@ -9,11 +50,13 @@
     creates: /etc/kubernetes/kubelet.conf
   become: true
   no_log: true
+  failed_when: false
   when: >
+        not k8s_multi_master and
         not k8s_cluster_init and
         k8s_cluster_init_skip_ca_verification
 
-- name: join_cluster | Joining Additional Nodes To K8s Cluster
+- name: join_cluster | Joining Additional Nodes To K8s Cluster (non multi-master)
   command: >
            kubeadm join \
            --token {{ k8s_token }} \
@@ -23,5 +66,6 @@
   become: true
   no_log: true
   when: >
+        not k8s_multi_master and
         not k8s_cluster_init and
         not k8s_cluster_init_skip_ca_verification
