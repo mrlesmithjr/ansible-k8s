@@ -12,7 +12,7 @@ k8s_cluster_group: k8s
 
 k8s_cluster_init_skip_ca_verification: false
 
-k8s_dashboard: https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+k8s_dashboard: https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
 
 k8s_debian_packages:
   - kubelet
@@ -60,3 +60,4 @@ k8s_users:
   - user: vagrant
 
 k8s_version: 1.11.2
+k8s_cni_version: 0.6.0
