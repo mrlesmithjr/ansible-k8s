@@ -37,26 +37,26 @@
 - include_tasks: pods.yml
   tags:
     - k8s_pods
-  when: >
-        (inventory_hostname == k8s_master) and
-        k8s_cluster_init
+  when:
+    - inventory_hostname == k8s_master
+    - k8s_cluster_init|bool
 
 - include_tasks: cluster_services.yml
   tags:
     - k8s_cluster_services
-  when: >
-        (inventory_hostname == k8s_master) and
-        k8s_cluster_init
+  when:
+    - inventory_hostname == k8s_master
+    - k8s_cluster_init|bool
 
 - include_tasks: dashboard.yml
   tags:
-    - k8s_dashboard
-    - k8s_get_dashboard
+    - k8s_dashboard|bool
+    - k8s_get_dashboard|bool
 
 - include_tasks: helm.yml
   tags:
     - k8s_helm
-  when: k8s_helm_install
+  when: k8s_helm_install|bool
 
 - include_tasks: reset_cluster.yml
-  when: k8s_reset_cluster
+  when: k8s_reset_cluster|bool

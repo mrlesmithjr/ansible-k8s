@@ -1,7 +1,7 @@
 ---
 - name: debian | Installing Pre-Reqs
   apt:
-    name: ["apt-transport-https", "jq"]
+    name: ["apt-transport-https", "jq", "net-tools"]
     state: present
   become: true
   register: result

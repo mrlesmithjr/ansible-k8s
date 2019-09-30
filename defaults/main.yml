@@ -22,7 +22,7 @@ k8s_debian_packages:
 
 k8s_debian_repo_info:
   key: "{{ k8s_package_url }}/apt/doc/apt-key.gpg"
-  repo: "deb http://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release|lower }} main"
+  repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 
 # https://github.com/kubernetes/helm
 

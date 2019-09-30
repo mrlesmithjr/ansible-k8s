@@ -12,9 +12,9 @@
     kubectl --kubeconfig {{ k8s_admin_config }} \
     create -f /etc/kubernetes/tiller-rbac-config.yaml
   become: true
-  when: >
-        inventory_hostname == k8s_master and
-        _k8s_tiller_rbac_config_generated['changed']
+  when:
+    - inventory_hostname == k8s_master
+    - _k8s_tiller_rbac_config_generated['changed']
 
 - name: helm | Checking If Helm Is Already Installed
   stat:
@@ -24,26 +24,28 @@
 
 - name: helm | Checking Installed Version Of Helm (If Installed)
   shell: >
-         helm version | grep -o SemVer:.* | sed 's|:| |g' \
-         | sed 's|,||g' | awk '{print $2}' | sed 's|\"||g' \
-         | sed 's|v||g'
+    helm version | grep -o SemVer:.* | sed 's|:| |g' \
+    | sed 's|,||g' | awk '{print $2}' | sed 's|\"||g' \
+    | sed 's|v||g'
   register: _k8s_helm_installed_version
   changed_when: false
-  when: >
-        inventory_hostname == k8s_master and
-        _k8s_helm_installed_check['stat']['exists']
+  when:
+    - inventory_hostname == k8s_master
+    - _k8s_helm_installed_check['stat']['exists']
 
 - name: helm | Setting Installed Version Of Helm
   set_fact:
     _k8s_helm_version_installed: "{{ hostvars[inventory_hostname]['_k8s_helm_installed_version']['stdout_lines'][0] }}"
-  when: >
-        inventory_hostname == k8s_master and
-        _k8s_helm_installed_check['stat']['exists']
+  when:
+    - inventory_hostname == k8s_master
+    - _k8s_helm_installed_check['stat']['exists']
 
-- debug: var=_k8s_helm_version_installed
-  when: >
-        inventory_hostname == k8s_master and
-        _k8s_helm_installed_check['stat']['exists']
+- name: helm | Debug Helm Version Installed
+  debug:
+    var: _k8s_helm_version_installed
+  when:
+    - inventory_hostname == k8s_master
+    - _k8s_helm_installed_check['stat']['exists']
 
 - name: helm | Installing Helm
   unarchive:
@@ -53,11 +55,10 @@
     remote_src: true
   register: _k8s_helm_installed
   become: true
-  when: >
-        (inventory_hostname == k8s_master) and
-        (not _k8s_helm_installed_check['stat']['exists'] or
-        (_k8s_helm_installed_check['stat']['exists'] and
-        _k8s_helm_version_installed != k8s_helm_version))
+  when:
+    - inventory_hostname == k8s_master
+    - not _k8s_helm_installed_check['stat']['exists'] or _k8s_helm_installed_check['stat']['exists']
+    - _k8s_helm_version_installed != k8s_helm_version
 
 - name: helm | Copying Helm
   copy:
@@ -65,9 +66,9 @@
     dest: "{{ k8s_helm_install_dir }}/"
     remote_src: true
   become: true
-  when: >
-        (inventory_hostname == k8s_master) and
-        _k8s_helm_installed['changed']
+  when:
+    - inventory_hostname == k8s_master
+    - _k8s_helm_installed['changed']
 
 - name: helm | Ensuring Helm Is Executable
   file:

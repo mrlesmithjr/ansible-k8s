@@ -1,31 +1,32 @@
 ---
 - name: network | Applying Pod Network
   shell: >
-           kubectl --kubeconfig {{ k8s_admin_config }} \
-           apply -f {{ k8s_pod_network_config }}
+    kubectl --kubeconfig {{ k8s_admin_config }} \
+    apply -f {{ k8s_pod_network_config }}
   become: true
   register: _k8s_pod_network_applied
-  when: >
-        (inventory_hostname == k8s_master) and
-        not k8s_cluster_init
+  when:
+    - inventory_hostname == k8s_master
+    - not k8s_cluster_init|bool
 
 - name: network | Waiting For Kube-DNS or CoreDNS To Be Running
   shell: >
-           kubectl --kubeconfig {{ k8s_admin_config }} \
-           get pods --all-namespaces | grep -e kube-dns -e coredns
+    kubectl --kubeconfig {{ k8s_admin_config }} \
+    get pods --all-namespaces | grep -e kube-dns -e coredns
   become: true
   register: _k8s_kube_dns_running
   until: ("Running" in _k8s_kube_dns_running['stdout'])
   retries: 30
   delay: 10
   changed_when: false
-  when: >
-        (inventory_hostname == k8s_master)
+  when: inventory_hostname == k8s_master
 
-- debug: msg="Kube-DNS or CoreDNS Is Up and Running"
-  when: >
-        (inventory_hostname == k8s_master) and
-        ("Running" in _k8s_kube_dns_running['stdout'])
+- name: network | Debugging Kube-DNS or CoreDNS
+  debug:
+    msg: "Kube-DNS or CoreDNS Is Up and Running"
+  when:
+    - inventory_hostname == k8s_master
+    - ("Running" in _k8s_kube_dns_running['stdout'])
 
 - name: network | Capturing Cluster-IP On Master
   command: "kubectl --kubeconfig {{ k8s_admin_config }} get svc -o json"
@@ -51,7 +52,8 @@
   when: inventory_hostname != k8s_master
 
 - name: network | Showing Cluster-IP
-  debug: var=k8s_cluster_ip
+  debug:
+    var: k8s_cluster_ip
   tags:
     - k8s_cluster_ip
 
@@ -67,11 +69,11 @@
 
 - name: network | Setting IP Route To Reach Cluster-IP On Master
   command: >
-           route add {{ k8s_cluster_ip }} gw \
-           {{ hostvars[k8s_master]['k8s_advertise_address'] }}
+    route add {{ k8s_cluster_ip }} gw \
+    {{ hostvars[k8s_master]['k8s_advertise_address'] }}
   become: true
-  when: >
-        inventory_hostname != k8s_master and
-        _k8s_cluster_ip_route['rc'] == 1
+  when:
+    - inventory_hostname != k8s_master
+    - _k8s_cluster_ip_route['rc'] == 1
   tags:
     - k8s_cluster_ip

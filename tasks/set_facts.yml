@@ -6,7 +6,8 @@
     - k8s_get_dashboard
 
 - name: set_facts | Showing K8s Master
-  debug: var=k8s_master
+  debug:
+    var: k8s_master
 
 - name: set_facts | Setting K8s Advertise Address
   set_fact:
@@ -15,4 +16,5 @@
     - k8s_get_dashboard
 
 - name: set_facts | Showing K8s Advertise Address
-  debug: var=k8s_advertise_address
+  debug:
+    var: k8s_advertise_address

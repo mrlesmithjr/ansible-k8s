@@ -1,8 +1,8 @@
 ---
 - name: pods | Capture Pods In All Namespaces
   command: >
-           kubectl --kubeconfig {{ k8s_admin_config }} \
-           get pods --all-namespaces -o json
+    kubectl --kubeconfig {{ k8s_admin_config }} \
+    get pods --all-namespaces -o json
   register: _k8s_pods_all_namespaces
   become: true
   changed_when: false
