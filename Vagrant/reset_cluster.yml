@@ -8,12 +8,13 @@
         k8s_master: "{{ groups[k8s_cluster_group][0] }}"
 
     - name: set_facts | Showing K8s Master
-      debug: var=k8s_master
+      debug:
+        var: k8s_master
 
 - hosts: k8s
   tasks:
     - name: Resetting K8s Slaves
-      command: kubeadm reset
+      command: kubeadm reset -f
       become: true
       when: inventory_hostname != k8s_master
 
@@ -39,7 +40,7 @@
       when: inventory_hostname != k8s_master
 
     - name: Resetting K8s master
-      command: kubeadm reset
+      command: kubeadm reset -f
       become: true
       when: inventory_hostname == k8s_master
 
