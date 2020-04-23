@@ -1,7 +1,7 @@
 ---
 - name: debian | installing packages
   apt:
-    name: ["ntp"]
+    name: ntp
     state: present
   become: true
   register: result

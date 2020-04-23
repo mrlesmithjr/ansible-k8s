@@ -20,7 +20,9 @@ ntp_master_servers:
 
 # Defines your primary domain name (FQDN)
 ntp_pri_domain_name: example.org
+
 # Defines internal ntp servers for clients to poll
-# ntp_servers:
-#  - 'ntp1.{{ ntp_pri_domain_name }}'
-#  - 'ntp2.{{ ntp_pri_domain_name }}'
+ntp_servers:
+  []
+  # - "ntp1.{{ ntp_pri_domain_name }}"
+  # - "ntp2.{{ ntp_pri_domain_name }}"

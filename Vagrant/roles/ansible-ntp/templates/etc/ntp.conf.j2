@@ -20,7 +20,7 @@ fudge 127.127.1.1 stratum 5
 server {{ server }}
 {%     endfor %}
 {%   endif %}
-{%   if ntp_servers is not defined %}
+{%   if ntp_servers is not defined or ntp_servers == [] %}
 server 0.ubuntu.pool.ntp.org
 server 1.ubuntu.pool.ntp.org
 server 2.ubuntu.pool.ntp.org
