@@ -1,9 +1,6 @@
 ---
-- hosts: k8s
-  # become: true
+- hosts: all
   vars:
-    # Define Docker version to install
-    docker_version: 17.03.2
     # Defines if all nodes in play should be added to each hosts /etc/hosts
     etc_hosts_add_all_hosts: true
     etc_hosts_pri_dns_name: "{{ pri_domain_name }}"
@@ -13,14 +10,79 @@
     etc_hosts_use_default_ip_address: false
     # Defines if ansible_ssh_host is used for defining hosts
     etc_hosts_use_ansible_ssh_host: true
+    pri_domain_name: test.vagrant.local
+  tasks:
+    - import_role:
+        name: ansible-change-hostname
+    - import_role:
+        name: ansible-etc-hosts
+    - import_role:
+        name: ansible-timezone
+    - import_role:
+        name: ansible-ntp
+
+- hosts: k8s_nfs_servers
+  vars:
+    nfs_server_exports:
+      - export:
+        access:
+          - hostname: "*"
+            options:
+              - rw
+              - sync
+              - no_subtree_check
+              - no_root_squash
+        mode: u=rwx,g=rwx,o=rwx
+        path: /opt/nfs/k8s
+    pri_domain_name: test.vagrant.local
+  tasks:
+    - import_role:
+        name: ansible-nfs-server
+
+- hosts: k8s
+  # become: true
+  vars:
+    # Define Docker version to install
+    docker_version: 18.06.3
     k8s_cluster_init_skip_ca_verification: true
     k8s_helm_install: true
+    k8s_version: 1.17.5
+    nfs_client_mounts:
+      - mount:
+        fstype: nfs
+        opts:
+          - rsize=8192
+          - wsize=8192
+          - intr
+        path: /opt/nfs/k8s
+        src: 192.168.250.13:/opt/nfs/k8s
+        state: mounted
     pri_domain_name: test.vagrant.local
-  roles:
-    - role: ansible-change-hostname
-    - role: ansible-etc-hosts
-    - role: ansible-timezone
-    - role: ansible-ntp
-    - role: ansible-docker
-    - role: ansible-k8s
   tasks:
+    - import_role:
+        name: ansible-nfs-client
+    - import_role:
+        name: ansible-docker
+    - import_role:
+        name: ansible-k8s
+
+- hosts: k8s
+  vars:
+    k8s_admin_config: /etc/kubernetes/admin.conf
+    k8s_master: "{{ groups[k8s_cluster_group][0] }}"
+  tasks:
+    - name: Ensuring {{ lookup('env','HOME') }}/.kube Exists
+      file:
+        dest: "{{ lookup('env','HOME') }}/.kube"
+        state: directory
+      become: false
+      delegate_to: localhost
+      run_once: true
+
+    - name: Fetching {{ k8s_admin_config }} From {{ k8s_master }}
+      fetch:
+        src: "{{ k8s_admin_config }}"
+        dest: "{{ lookup('env','HOME') }}/.kube/vagrant-k8s.yml"
+        flat: true
+      become: true
+      when: inventory_hostname == k8s_master

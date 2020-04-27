@@ -22,7 +22,7 @@
         chain: "{{ item }}"
         policy: ACCEPT
       become: true
-      with_items:
+      loop:
         - INPUT
         - FORWARD
         - OUTPUT
@@ -48,7 +48,7 @@
         chain: "{{ item }}"
         policy: ACCEPT
       become: true
-      with_items:
+      loop:
         - INPUT
         - FORWARD
         - OUTPUT
