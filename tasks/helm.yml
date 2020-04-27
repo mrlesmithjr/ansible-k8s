@@ -7,7 +7,7 @@
 
 - name: helm | Checking Installed Version Of Helm (If Installed)
   shell: >
-    helm version | grep -o SemVer:.* | sed 's|:| |g' \
+    helm version | grep -o Version:.* | sed 's|:| |g' \
     | sed 's|,||g' | awk '{print $2}' | sed 's|\"||g' \
     | sed 's|v||g'
   register: _k8s_helm_installed_version
