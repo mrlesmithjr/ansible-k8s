@@ -5,4 +5,4 @@
     enabled: true
     state: started
   become: true
-  with_items: "{{ k8s_services }}"
+  loop: "{{ k8s_services }}"

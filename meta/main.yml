@@ -1,14 +1,15 @@
 galaxy_info:
   author: Larry Smith Jr.
-  description: An [Ansible] role to deploy a [Kubernetes] - K8s Cluster
+  description: Ansible role to deploy K8s cluster
 
   license: MIT
 
-  min_ansible_version: 1.2
+  min_ansible_version: 2.8
 
   platforms:
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
 
   galaxy_tags:

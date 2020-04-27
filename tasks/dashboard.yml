@@ -18,14 +18,6 @@
     - inventory_hostname == k8s_master
     - _k8s_dashboard['rc'] == 1
 
-# - debug: var=(_k8s_get_services_all['stdout']|from_json)['items']
-#   tags:
-#     - 'k8s_get_dashboard'
-
-# - debug: var=k8s_reports['display_dashboard_link']
-#   tags:
-#     - 'k8s_get_dashboard'
-
 - name: dashboard | Dashboard
   debug:
     msg: "{{ lookup('template', 'k8s_dashboard.j2') }}"

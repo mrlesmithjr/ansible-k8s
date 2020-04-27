@@ -1,33 +1,10 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-**Table of Contents**  _generated with [DocToc](https://github.com/thlorenz/doctoc)_
-
--   [ansible-k8s](#ansible-k8s)
-    -   [Requirements](#requirements)
-    -   [Role Variables](#role-variables)
-    -   [Dependencies](#dependencies)
-    -   [Example Playbook](#example-playbook)
-    -   [Vagrant](#vagrant)
-    -   [Additional Info](#additional-info)
-        -   [Reset `K8s` cluster](#reset-k8s-cluster)
-        -   [Get a list of pods and information on them](#get-a-list-of-pods-and-information-on-them)
-        -   [Kubernetes-Dashboard](#kubernetes-dashboard)
-        -   [Find the port to connect to](#find-the-port-to-connect-to)
-        -   [Inspect the service](#inspect-the-service)
-    -   [License](#license)
-    -   [Author Information](#author-information)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # ansible-k8s
 
 An [Ansible](https://www.ansible.com) role to deploy a
 [Kubernetes](https://kubernetes.io) - K8s Cluster
 
--   [Weave-Net](https://www.weave.works/docs/net/latest/kube-addon/) is used for
-    the network overlay currently
+- [Weave-Net](https://www.weave.works/docs/net/latest/kube-addon/) is used for
+  the network overlay currently
 
 ## Requirements
 
@@ -47,43 +24,20 @@ None
 
 ## Example Playbook
 
-```yaml
----
-- hosts: k8s
-  # become: true
-  vars:
-    # Define Docker version to install
-    docker_version: '1.12.6'
-    # Defines if all nodes in play should be added to each hosts /etc/hosts
-    etc_hosts_add_all_hosts: true
-    etc_hosts_pri_dns_name: '{{ pri_domain_name }}'
-    # Defines if node has static IP.
-    etc_hosts_static_ip: true
-    # Defines if ansible_default_ipv4.address is used for defining hosts
-    etc_hosts_use_default_ip_address: false
-    # Defines if ansible_ssh_host is used for defining hosts
-    etc_hosts_use_ansible_ssh_host: true
-    pri_domain_name: 'test.vagrant.local'
-  roles:
-    - role: ansible-etc-hosts
-    - role: ansible-change-hostname
-    - role: ansible-docker
-    - role: ansible-k8s
-  tasks:
-```
+[Vagrant/playbook.yml](Vagrant/playbook.yml)
 
 ## Vagrant
 
--   Requirements
-    -   [Ansible](https://www.ansible.com)
-    -   [Vagrant](https://www.vagrantup.com/)
-    -   [Virtualbox](https://www.virtualbox.org/)
+- Requirements
+  - [Ansible](https://www.ansible.com)
+  - [Vagrant](https://www.vagrantup.com/)
+  - [Virtualbox](https://www.virtualbox.org/)
 
 Included in the `Vagrant` folder is a testing environment with `3` nodes.
 
--   `node0` - K8s Cluster Master (`192.168.250.10`)
--   `node1` - K8s Cluster Member (`192.168.250.11`)
--   `node2` - K8s Cluster Member (`192.168.250.12`)
+- `node0` - K8s Cluster Master (`192.168.250.10`)
+- `node1` - K8s Cluster Member (`192.168.250.11`)
+- `node2` - K8s Cluster Member (`192.168.250.12`)
 
 You can easily spin this up for learning purposes:
 
@@ -394,6 +348,6 @@ MIT
 
 Larry Smith Jr.
 
--   [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
--   [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
--   <mailto:mrlesmithjr@gmail.com>
+- [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
+- [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
+- <mailto:mrlesmithjr@gmail.com>
