@@ -1,3 +1,29 @@
+commit df096446b327ac8ed4317b50db1ab9fefe6422ef
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 17:03:22 2020 -0400
+
+    Fixed helm version check
+
+commit e54a011fe17dec210355cf4a36bf52f6de6fb2d1
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 17:02:17 2020 -0400
+
+    Fixed tags for various tasks
+
+commit 0d60bd406d886fdd918545b4eacc39f01de3e22b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 17:00:05 2020 -0400
+
+    Updated link to dashboard
+
+commit 75f5eabc33210e7513a9a858fe08ec897c977c07
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 15:28:54 2020 -0400
+
+    Cleaned up repo info a bit
+    
+    Still needs more
+
 commit 79e47c45d4fe0b3203a61cc453b3a06d9a261d81
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Mon Apr 27 15:28:28 2020 -0400
