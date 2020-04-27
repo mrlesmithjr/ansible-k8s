@@ -50,8 +50,8 @@
 
 - include_tasks: dashboard.yml
   tags:
-    - k8s_dashboard|bool
-    - k8s_get_dashboard|bool
+    - k8s_dashboard
+    - k8s_get_dashboard
 
 - include_tasks: helm.yml
   tags:
