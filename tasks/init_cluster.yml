@@ -6,6 +6,7 @@
     path: "{{ k8s_admin_config }}"
   tags:
     - k8s_get_dashboard
+    - k8s_pods
   register: _k8s_kubectl_cluster_info
   when: inventory_hostname == k8s_master
 
@@ -14,6 +15,7 @@
     k8s_cluster_init: false
   tags:
     - k8s_get_dashboard
+    - k8s_pods
   when:
     - inventory_hostname == k8s_master
     - not _k8s_kubectl_cluster_info['stat']['exists']
@@ -23,6 +25,7 @@
     k8s_cluster_init: true
   tags:
     - k8s_get_dashboard
+    - k8s_pods
   when:
     - inventory_hostname == k8s_master
     - _k8s_kubectl_cluster_info['stat']['exists']

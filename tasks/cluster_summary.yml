@@ -11,6 +11,8 @@
   retries: 30
   delay: 10
   register: _k8s_cluster_nodes
+  tags:
+    - k8s_cluster_nodes
   when: inventory_hostname == k8s_master
 
 # We capture as JSON in order to use for later iteration
@@ -19,9 +21,13 @@
   changed_when: false
   become: true
   register: _k8s_cluster_nodes_json
+  tags:
+    - k8s_cluster_nodes
   when: inventory_hostname == k8s_master
 
 - name: cluster_summary | Displaying Cluster Nodes
   debug:
     var: _k8s_cluster_nodes['stdout_lines']
+  tags:
+    - k8s_cluster_nodes
   when: inventory_hostname == k8s_master
