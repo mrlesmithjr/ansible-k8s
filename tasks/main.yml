@@ -25,6 +25,7 @@
     - k8s_pods
 
 - include_tasks: network.yml
+  when: k8s_apply_networking|bool
 
 - include_tasks: join_cluster.yml
   when: inventory_hostname != k8s_master
@@ -32,6 +33,7 @@
 - include_tasks: cluster_summary.yml
   tags:
     - k8s_cluster_nodes
+  when: k8s_apply_networking|bool
 
 - include_tasks: users.yml
 
@@ -41,6 +43,7 @@
   when:
     - inventory_hostname == k8s_master
     # - k8s_cluster_init|bool
+    - k8s_apply_networking|bool
 
 - include_tasks: cluster_services.yml
   tags:
@@ -50,16 +53,21 @@
   when:
     - inventory_hostname == k8s_master
     - k8s_cluster_init|bool
+    - k8s_apply_networking|bool
 
 - include_tasks: dashboard.yml
   tags:
     - k8s_dashboard
     - k8s_get_dashboard
+  when:
+    - k8s_apply_networking|bool
 
 - include_tasks: helm.yml
   tags:
     - k8s_helm
-  when: k8s_helm_install|bool
+  when:
+    - k8s_helm_install|bool
+    - k8s_apply_networking|bool
 
 - include_tasks: reset_cluster.yml
   when: k8s_reset_cluster|bool

@@ -1,3 +1,9 @@
+commit da7741711507f7b8a39314e9082dc4437a4ecf82
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 17:03:35 2020 -0400
+
+    Updated repo usage and info
+
 commit df096446b327ac8ed4317b50db1ab9fefe6422ef
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Mon Apr 27 17:03:22 2020 -0400

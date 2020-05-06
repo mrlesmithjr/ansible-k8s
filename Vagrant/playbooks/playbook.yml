@@ -44,6 +44,7 @@
   vars:
     # Define Docker version to install
     docker_version: 18.06.3
+    k8s_apply_networking: false
     k8s_cluster_init_skip_ca_verification: true
     k8s_helm_install: true
     k8s_version: 1.17.5

@@ -8,6 +8,8 @@ k8s_advertise_address_int: enp0s8
 
 k8s_advertise_bind_port: 6443
 
+k8s_apply_networking: true
+
 k8s_cluster_group: k8s
 
 k8s_cluster_init_skip_ca_verification: false
