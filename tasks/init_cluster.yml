@@ -67,6 +67,9 @@
 - name: init_cluster | Initializing Cluster Master
   command: >
     kubeadm init \
+    {% if k8s_pod_network_cidr is defined %}
+    --pod-network-cidr={{ k8s_pod_network_cidr }} \
+    {% endif %}
     --apiserver-advertise-address \
     {{ hostvars[inventory_hostname]['k8s_advertise_address'] }} \
     --apiserver-bind-port \

@@ -1,3 +1,12 @@
+commit a1fd26aed801dff0d95f0f71d68ff4e0f736dae8
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Wed May 6 13:57:06 2020 -0400
+
+    Added ability to skip networking CNI install
+    
+    This may have some value in whether or not the need to add manually
+    (possibly) the network constructs. May need to revisit.
+
 commit da7741711507f7b8a39314e9082dc4437a4ecf82
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Mon Apr 27 17:03:35 2020 -0400

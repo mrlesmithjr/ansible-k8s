@@ -1,4 +1,15 @@
 ---
+- name: set_facts | Setting Network CNI Facts
+  set_fact:
+    k8s_pod_network_config: "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  when: k8s_pod_network_cni|lower == "weave"
+
+- name: set_facts | Setting Network CNI Facts
+  set_fact:
+    k8s_pod_network_cidr: 192.168.0.0/16
+    k8s_pod_network_config: https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+  when: k8s_pod_network_cni|lower == "calico"
+
 - name: set_facts | Setting K8s Master
   set_fact:
     k8s_master: "{{ groups[k8s_cluster_group][0] }}"
