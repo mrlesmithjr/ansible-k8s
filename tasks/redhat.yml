@@ -1,0 +1,47 @@
+---
+- name: redhat | Disable SELinux
+  selinux:
+    state: disabled
+  become: true
+
+- name: redhat | Manage Sysctl Settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  become: true
+  loop:
+    - name: net.bridge.bridge-nf-call-iptables
+      value: 1
+
+- name: redhat | Installing Pre-Reqs
+  package:
+    name:
+      - net-tools
+    state: present
+  become: true
+  register: result
+  until: result is successful
+
+- name: redhat | Adding K8s Repo
+  yum_repository:
+    name: kubernetes
+    description: kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: true
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    exclude: kubelet kubeadm kubectl
+  become: true
+
+- name: redhat | Installing K8s Packages
+  package:
+    name: "{{ k8s_packages }}"
+    state: present
+    disable_excludes: kubernetes
+  become: true
+  register: result
+  until: result is successful

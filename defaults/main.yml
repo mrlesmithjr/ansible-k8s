@@ -16,12 +16,6 @@ k8s_cluster_init_skip_ca_verification: false
 
 k8s_dashboard: https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
 
-k8s_debian_packages:
-  - kubelet
-  - kubeadm
-  - kubectl
-  - kubernetes-cni
-
 k8s_debian_repo_info:
   key: "{{ k8s_package_url }}/apt/doc/apt-key.gpg"
   repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"

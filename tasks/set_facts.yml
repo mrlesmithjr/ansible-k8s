@@ -1,4 +1,22 @@
 ---
+- name: set_facts | Setting K8s Packages
+  set_fact:
+    k8s_packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+      - kubernetes-cni
+  when: ansible_os_family == "Debian"
+
+- name: set_facts | Setting K8s Packages
+  set_fact:
+    k8s_packages:
+      - kubelet-{{ k8s_version }}
+      - kubeadm-{{ k8s_version }}
+      - kubectl-{{ k8s_version }}
+      - kubernetes-cni-{{ k8s_cni_version }}
+  when: ansible_os_family == "RedHat"
+
 - name: set_facts | Setting Network CNI Facts
   set_fact:
     k8s_pod_network_config: "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
@@ -7,7 +25,7 @@
 - name: set_facts | Setting Network CNI Facts
   set_fact:
     k8s_pod_network_cidr: 192.168.0.0/16
-    k8s_pod_network_config: https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+    k8s_pod_network_config: https://docs.projectcalico.org/manifests/calico.yaml
   when: k8s_pod_network_cni|lower == "calico"
 
 - name: set_facts | Setting K8s Master

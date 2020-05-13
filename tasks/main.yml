@@ -14,6 +14,9 @@
 - include_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- include_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
 - include_tasks: services.yml
 
 - include_tasks: swap.yml

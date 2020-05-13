@@ -34,7 +34,7 @@
 
 - name: debian | Installing K8s Packages
   apt:
-    name: "{{ k8s_debian_packages }}"
+    name: "{{ k8s_packages }}"
     state: present
   become: true
   register: result
