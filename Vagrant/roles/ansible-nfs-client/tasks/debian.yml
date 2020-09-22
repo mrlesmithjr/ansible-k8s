@@ -1,8 +1,0 @@
----
-- name: debian | Installing NFS Client Packages
-  apt:
-    name:
-      - 'nfs-common'
-      - 'rpcbind'
-    state: "present"
-  become: true

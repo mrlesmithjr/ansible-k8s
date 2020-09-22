@@ -1,0 +1,21 @@
+[submodule "Vagrant/roles/ansible-change-hostname"]
+	path = Vagrant/roles/ansible-change-hostname
+	url = https://www.github.com/mrlesmithjr/ansible-change-hostname.git
+[submodule "Vagrant/roles/ansible-docker"]
+	path = Vagrant/roles/ansible-docker
+	url = https://www.github.com/mrlesmithjr/ansible-docker.git
+[submodule "Vagrant/roles/ansible-etc-hosts"]
+	path = Vagrant/roles/ansible-etc-hosts
+	url = https://www.github.com/mrlesmithjr/ansible-etc-hosts.git
+[submodule "Vagrant/roles/ansible-nfs-client"]
+	path = Vagrant/roles/ansible-nfs-client
+	url = https://github.com/mrlesmithjr/ansible-nfs-client.git
+[submodule "Vagrant/roles/ansible-nfs-server"]
+	path = Vagrant/roles/ansible-nfs-server
+	url = https://github.com/mrlesmithjr/ansible-nfs-server.git
+[submodule "Vagrant/roles/ansible-ntp"]
+	path = Vagrant/roles/ansible-ntp
+	url = https://www.github.com/mrlesmithjr/ansible-ntp.git
+[submodule "Vagrant/roles/ansible-timezone"]
+	path = Vagrant/roles/ansible-timezone
+	url = https://www.github.com/mrlesmithjr/ansible-timezone.git

@@ -1,7 +1,0 @@
----
-- name: Example Playbook
-  hosts: all
-  tasks:
-    - name: Include ansible-docker
-      include_role:
-        name: ansible-docker
