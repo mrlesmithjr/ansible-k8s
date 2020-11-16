@@ -1,9 +1,9 @@
 ---
-- name: swap | Removing swapfile From /etc/fstab
-  mount:
-    name: swap
-    fstype: swap
-    state: absent
+- name: swap | Disable SWAP in fstab since kubernetes can't work with swap enabled
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
   become: true
 
 - name: swap | Disabling Swap
